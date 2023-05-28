@@ -125,11 +125,13 @@ def get_ad_index():
         r = requests.get(url, headers=header)
         return r.json()
     
+def all_ad_index():
+    for i in range(1, 13512):
+        item_datas = process_page(i)
+        insert_multi_data(item_datas)
 
 if __name__ == '__main__':
     # table.delete(
     #     LeapcellField("1662759172244045824") > 0
     #     )
-    for i in range(1, 13512):
-        item_datas = process_page(i)
-        insert_multi_data(item_datas)
+    all_ad_index()

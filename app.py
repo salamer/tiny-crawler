@@ -1,6 +1,6 @@
-
+from adindex import all_ad_index
 
 
 def handler():
-    print("Hello World!")
+    all_ad_index()
     return "Hello World!"
