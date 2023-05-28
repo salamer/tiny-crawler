@@ -1,6 +1,3 @@
-import gevent
-from gevent import monkey
-monkey.patch_all(httplib=True)
 import requests
 from bs4 import BeautifulSoup
 from leapcell import Leapcell, LeapcellField
