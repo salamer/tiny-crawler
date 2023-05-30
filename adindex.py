@@ -4,8 +4,8 @@ from leapcell import Leapcell, LeapcellField
 from io import BytesIO
 from typing import List, Dict
 
-
-leapclient = Leapcell("https://leapcell.io", "1663223359893045248")
+leapclient = Leapcell("http://localhost:8080", "1663223359893045248")
+# leapclient = Leapcell("https://leapcell.io", "1663223359893045248")
 table = leapclient.table("test1/myproject", "1663223359893045248")
 
 header = {
@@ -122,7 +122,9 @@ def get_ad_index():
         return r.json()
     
 def all_ad_index():
-    for i in range(1, 13512):
+    count = table.select().count()
+    print("count", count)
+    for i in range(count / 100, 13512):
         print("page {}".format(i))
         try:
             item_datas = process_page(i)
