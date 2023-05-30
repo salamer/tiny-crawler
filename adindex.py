@@ -5,8 +5,8 @@ from io import BytesIO
 from typing import List, Dict
 
 
-leapclient = Leapcell("http://localhost:8080", "1662758095545237504")
-table = leapclient.table("test1/myproject", "1662758095545237504")
+leapclient = Leapcell("https://leapcell.io", "1663223359893045248")
+table = leapclient.table("test1/myproject", "1663223359893045248")
 
 header = {
     'Host': 'www.adscientificindex.com',
@@ -41,14 +41,14 @@ def insert_data(item : Dict):
         except Exception as e:
             print("error {}".format(e))
             image_info = None
-    the_insert_data["1662758654872453120"] = item["name"]
-    the_insert_data["1662759717960744960"] = [image_info]
-    the_insert_data["1662758690834415616"] = item["country"]
-    the_insert_data["1662758800314138624"] = item["institution"]
-    the_insert_data["1662758853590188032"] = item["subject"]
-    the_insert_data["1662758964416282624"] = item["sub_subject"]
-    the_insert_data["1662759052781879296"] = float(item["h_index_total"])
-    the_insert_data["1662759172244045824"] = int(item["citation_total"])
+    the_insert_data["1663223440276881408"] = item["name"]
+    the_insert_data["1663223472795320320"] = [image_info]
+    the_insert_data["1663223501916372992"] = item["country"]
+    the_insert_data["1663223518097997824"] = item["institution"]
+    the_insert_data["1663223549261676544"] = item["subject"]
+    the_insert_data["1663223574939205632"] = item["sub_subject"]
+    the_insert_data["1663223625572843520"] = float(item["h_index_total"])
+    the_insert_data["1663223658179362816"] = int(item["citation_total"])
     return the_insert_data
 
 def insert_multi_data(datas:List[Dict]):
@@ -57,10 +57,9 @@ def insert_multi_data(datas:List[Dict]):
     the_insert_data = []
     for item in datas:
         if table.get({
-            "1662758654872453120" : item["name"]
+            "1663223440276881408" : item["name"]
         }):
             continue
-        print("ohoihiohioioh")
         res = insert_data(item)
         if res is None:
             continue
@@ -124,8 +123,13 @@ def get_ad_index():
     
 def all_ad_index():
     for i in range(1, 13512):
-        item_datas = process_page(i)
-        insert_multi_data(item_datas)
+        print("page {}".format(i))
+        try:
+            item_datas = process_page(i)
+            insert_multi_data(item_datas)
+        except Exception as e:
+            print("error {}".format(e))
+            continue
 
 if __name__ == '__main__':
     # table.delete(
