@@ -6,8 +6,11 @@ import datetime
 import sys
 import copy
 import os
+from flask import Flask, render_template, request, redirect
+import random
+app = Flask(__name__)
 
-leapclient = Leapcell("http://localhost:8080", "xxx")
+leapclient = Leapcell("https://leapcell.io", "xxx")
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 headers = {'Accept': 'application/json'}
@@ -88,7 +91,7 @@ def process_trends_video(region: str, category_id: str, region_name: str):
     now = datetime.datetime(now_dt.year, now_dt.month, now_dt.day)
     now_ts = time.mktime(now.timetuple())
     table = leapclient.table(
-        "test1/myproject", table_id="1667524261138726912", field_type="name")
+        "test1/youtube", table_id="1667928105347481600", field_type="name")
 
     count = table.select().where((LeapcellField("region") == region) & 
                                  (LeapcellField("category") == category[category_id]) & 
@@ -109,7 +112,7 @@ def process_trends_video(region: str, category_id: str, region_name: str):
     for item in trends["items"]:
         video_id = item["id"]
         video_info = get_video_info(video_id)
-        time.sleep(2)
+        time.sleep(1)
         if len(video_info["items"]) == 0:
             continue
         video_info = video_info["items"][0]
@@ -139,9 +142,7 @@ def process_trends_video(region: str, category_id: str, region_name: str):
             "channelId": video_info["snippet"]["channelId"],
         }, on_conflict=["video_id", "retrieve_time", "region"])
     
-    # print(len(images), "images")
-    # data = leapclient.upload(images)
-    # print(data, "data")
+    return trends
 
 def retrieve():
     regions = get_region()
@@ -155,6 +156,35 @@ def retrieve():
             #     logger.error(e)
             time.sleep(1)
 
+@app.route("/xx")
+def xx():
+    return {"qq":"xx"}
+
+@app.route("/process_trends_video")
+def process_trends_video_api():
+    region = request.args.get("region")
+    category_id = request.args.get("category_id")
+    region_name = request.args.get("region_name")
+    return process_trends_video(region, category_id, region_name)
+
+
+@app.route("/retrieve")
+def retrieve_api():
+    regions = get_region()
+    for region in regions["items"]:
+        randint_val = random.randint(1, 100)
+        if randint_val > 3:
+            continue
+        for key in category.keys():
+            r = requests.get("http://localhost:5000/process_trends_video", params={
+                "region": region["snippet"]["gl"],
+                "category_id": key,
+                "region_name": region["snippet"]["name"]
+            })
+            print(r.json())
+
+    return {"status": "ok"}
 
 if __name__ == "__main__":
-    retrieve()
+    # retrieve()
+    app.run(port=5000, debug=True)
