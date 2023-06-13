@@ -91,7 +91,7 @@ def process_trends_video(region: str, category_id: str, region_name: str):
     now = datetime.datetime(now_dt.year, now_dt.month, now_dt.day)
     now_ts = time.mktime(now.timetuple())
     table = leapclient.table(
-        "test1/youtube", table_id="1667928105347481600", field_type="name")
+        "test1/youtube", table_id="1667948206508965888", field_type="name")
 
     count = table.select().where((LeapcellField("region") == region) & 
                                  (LeapcellField("category") == category[category_id]) & 
@@ -141,7 +141,8 @@ def process_trends_video(region: str, category_id: str, region_name: str):
             "retrieve_time": now_ts,
             "channelId": video_info["snippet"]["channelId"],
         }, on_conflict=["video_id", "retrieve_time", "region"])
-    
+    logging.info("Retrieved %d videos for region %s, category %s",
+                    len(trends["items"]), region, category[category_id])
     return trends
 
 def retrieve():
@@ -158,6 +159,7 @@ def retrieve():
 
 @app.route("/xx")
 def xx():
+    logging.info("xx, youtube here")
     return {"qq":"xx"}
 
 @app.route("/process_trends_video")
@@ -186,5 +188,5 @@ def retrieve_api():
     return {"status": "ok"}
 
 if __name__ == "__main__":
-    # retrieve()
-    app.run(port=5000, debug=True)
+    retrieve()
+    # app.run(port=5000, debug=True)
