@@ -183,15 +183,16 @@ def retrieve_api():
         if randint_val > 3:
             continue
         for key in category.keys():
-            r = requests.get("https://test1-youtube.leapcell.app/process_trends_video", params={
+            # r = requests.get("http://127.0.0.1:5000/process_trends_video", params={
+            r = requests.get("https://youtube-trends-test1.leapcell.app/process_trends_video", params={
                 "region": region["snippet"]["gl"],
                 "category_id": key,
                 "region_name": region["snippet"]["name"]
             })
-            print(r.json())
+            print(r)
 
     return {"status": "ok"}
 
 if __name__ == "__main__":
-    retrieve()
-    # app.run(port=5000, debug=True)
+    # retrieve()
+    app.run(port=5000, debug=True)
