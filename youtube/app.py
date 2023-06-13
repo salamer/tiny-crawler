@@ -98,14 +98,14 @@ def process_trends_video(region: str, category_id: str, region_name: str):
                                  (LeapcellField("retrieve_time") > now_ts)).count()
     if count >= 3:
         logging.info("Skip region %s, category %s", region, category[category_id])
-        return
+        return {"items": []}
 
     trends = get_trends_video(region, category_id)
     if "items" not in trends:
-        return
+        return {"items": []}
     if len(trends["items"]) == count:
         logging.info("Skip region %s, category %s", region, category[category_id])
-        return
+        return {"items": []}
     
     images = []
 
