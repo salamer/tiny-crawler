@@ -160,11 +160,13 @@ def retrieve():
 @app.route("/xx")
 def xx():
     logging.info("xx, youtube here")
+    print("xx, youtube here")
     return {"qq":"xx"}
 
 @app.route("/process_trends_video")
 def process_trends_video_api():
     logging.info("Process youtube trends video")
+    print("Process youtube trends video")
     region = request.args.get("region")
     category_id = request.args.get("category_id")
     region_name = request.args.get("region_name")
@@ -175,6 +177,7 @@ def process_trends_video_api():
 def retrieve_api():
     regions = get_region()
     logging.info("Retrieve youtube trends video")
+    print("Retrieve youtube trends video")
     for region in regions["items"]:
         randint_val = random.randint(1, 100)
         if randint_val > 3:
