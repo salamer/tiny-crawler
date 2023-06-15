@@ -11,7 +11,8 @@ import random
 app = Flask(__name__)
 
 leapclient = Leapcell("https://leapcell.io", "xxx")
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
 
 headers = {'Accept': 'application/json'}
 
@@ -162,6 +163,12 @@ def xx():
     logging.info("xx, youtube here")
     print("xx, youtube here")
     return {"qq":"xx"}
+
+@app.route("/exception")
+def exception():
+    logging.info("exceptions")
+    print("ohqoehqiowehioq")
+    return Exception("wqeqwpjepoqwjepq")
 
 @app.route("/process_trends_video")
 def process_trends_video_api():
