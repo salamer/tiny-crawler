@@ -2,3 +2,4 @@ python:
   type: wsgi
   app: app
   app_file: app.py
+  wsgi: app:app
