@@ -17,8 +17,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 headers = {'Accept': 'application/json'}
 
 key = os.environ.get("YOUTUBE_KEY", "")
-if not key:
-    raise Exception("YOUTUBE_KEY is not set")
+# if not key:
+#     raise Exception("YOUTUBE_KEY is not set")
 
 category = {
     "1": "Film & Animation",
