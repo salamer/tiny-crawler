@@ -10,6 +10,7 @@ from flask import Flask, render_template, request, redirect
 import random
 app = Flask(__name__)
 
+# leapclient = Leapcell("http://localhost:8080", "xxx")
 leapclient = Leapcell("https://leapcell.io", "xxx")
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -17,8 +18,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 headers = {'Accept': 'application/json'}
 
 key = os.environ.get("YOUTUBE_KEY", "")
-# if not key:
-#     raise Exception("YOUTUBE_KEY is not set")
+if not key:
+    raise Exception("YOUTUBE_KEY is not set")
 
 category = {
     "1": "Film & Animation",
@@ -92,11 +93,12 @@ def process_trends_video(region: str, category_id: str, region_name: str):
     now = datetime.datetime(now_dt.year, now_dt.month, now_dt.day)
     now_ts = time.mktime(now.timetuple())
     table = leapclient.table(
-        "test1/youtube", table_id="1667948206508965888", field_type="name")
+        "test1/youtube", table_id="1677618299069005824", field_type="name")
 
     count = table.select().where((LeapcellField("region") == region) & 
                                  (LeapcellField("category") == category[category_id]) & 
                                  (LeapcellField("retrieve_time") > now_ts)).count()
+    print(count)
     if count >= 3:
         logging.info("Skip region %s, category %s", region, category[category_id])
         return {"items": []}
@@ -122,7 +124,7 @@ def process_trends_video(region: str, category_id: str, region_name: str):
         if response.status_code != 200:
             logging.error("Failed to download image for video %s", video_id)
         images.append(copy.deepcopy(response.content))
-        image = leapclient.upload(response.content)
+        image = table.upload_image(response.content)
         publishAt = datetime.datetime.strptime(
             video_info["snippet"]["publishedAt"], '%Y-%m-%dT%H:%M:%S%z')
         tags = []
