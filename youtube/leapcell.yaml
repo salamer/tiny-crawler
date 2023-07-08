@@ -1,2 +1,2 @@
-start: gunicorn app:app -b 0.0.0.0:6000
+start: gunicorn app:app -b :6000
 port: 6000
