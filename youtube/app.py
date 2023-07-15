@@ -193,7 +193,7 @@ def retrieve_api():
             continue
         for key in category.keys():
             # r = requests.get("http://127.0.0.1:5000/process_trends_video", params={
-            r = requests.get("https://youtube-trends-test1.leapcell.app/process_trends_video", params={
+            r = requests.get("https://youtube-trends-test1-xamqyxwb.leapcell.dev/process_trends_video", params={
                 "region": region["snippet"]["gl"],
                 "category_id": key,
                 "region_name": region["snippet"]["name"]
